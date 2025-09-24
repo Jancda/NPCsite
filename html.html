@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Logística</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">Npc logistica</div>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showPage('home')">Início</a></li>
+        <li><a href="#" onclick="showPage('rastreamento')">Rastrear Pedido</a></li>
+        <li><a href="#" onclick="showPage('estoque')">Contar Estoque</a></li>
+        <li><a href="#" onclick="showPage('identificacao')">Identificar Produto</a></li>
+        <li><a href="#" onclick="showPage('entradas')">Registrar Entrada</a></li>
+        <li><a href="#" onclick="showPage('saidas')">Registrar Saída</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main>
+
+    <!-- Página Inicial -->
+    <section id="home" class="page">
+      <h1>Bem-vindo ao Sistema de Logística</h1>
+      <div class="dashboard">
+        <div class="card" onclick="showPage('rastreamento')">🧰 Rastrear Pedido</div>
+        <div class="card" onclick="showPage('estoque')">🧮 Contar Estoque</div>
+        <div class="card" onclick="showPage('identificacao')">🔍 Identificar Produto</div>
+        <div class="card" onclick="showPage('entradas')">📓 Registrar Entrada</div>
+        <div class="card" onclick="showPage('saidas')">📤 Registrar Saída</div>
+      </div>
+    </section>
+
+    <!-- Rastrear Pedido -->
+    <section id="rastreamento" class="page hidden">
+      <h2>🔍 Rastrear Pedido</h2>
+      <input type="text" id="codigoPedido" placeholder="Digite o código do pedido"/>
+      <button onclick="rastrearPedido()">Rastrear</button>
+      <div id="resultadoRastreamento"></div>
+    </section>
+
+    <!-- Contagem de Estoque -->
+    <section id="estoque" class="page hidden">
+      <h2>Contagem de Estoque</h2>
+      <button onclick="mostrarEstoque()">Mostrar Estoque</button>
+      <ul id="listaEstoque"></ul>
+    </section>
+
+    <!-- Identificação de Produto -->
+    <section id="identificacao" class="page hidden">
+      <h2>Identificar Produto</h2>
+      <input type="text" id="codigoProduto" placeholder="Digite o código do produto"/>
+      <button onclick="identificarProduto()">Buscar</button>
+      <div id="infoProduto"></div>
+    </section>
+
+    <!-- Registrar Entrada -->
+    <section id="entradas" class="page hidden">
+      <h2>Registrar Entrada de Produto</h2>
+      <input type="text" id="produtoEntrada" placeholder="Produto"/>
+      <input type="number" id="quantidadeEntrada" placeholder="Quantidade"/>
+      <button onclick="registrarEntrada()">Registrar</button>
+    </section>
+
+    <!-- Registrar Saída -->
+    <section id="saidas" class="page hidden">
+      <h2>Registrar Saída de Produto</h2>
+      <input type="text" id="produtoSaida" placeholder="Produto"/>
+      <input type="number" id="quantidadeSaida" placeholder="Quantidade"/>
+      <button onclick="registrarSaida()">Registrar</button>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 NPC consultoria. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
