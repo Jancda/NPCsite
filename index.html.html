@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Logística</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #002d62;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 30px;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      flex: 1 1 180px;
+      background: white;
+      padding: 20px;
+      border: 1px solid #ddd;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      background-color: #e6f0ff;
+      transform: scale(1.02);
+    }
+
+    .page input, .page button {
+      margin: 10px 5px;
+      padding: 10px;
+      width: 200px;
+      display: block;
+    }
+
+    .page button {
+      cursor: pointer;
+      background-color: #002d62;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    footer {
+      background-color: #002d62;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">Npc logistica</div>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showPage('home')">Início</a></li>
+        <li><a href="#" onclick="showPage('rastreamento')">Rastrear Pedido</a></li>
+        <li><a href="#" onclick="showPage('estoque')">Contar Estoque</a></li>
+        <li><a href="#" onclick="showPage('identificacao')">Identificar Produto</a></li>
+        <li><a href="#" onclick="showPage('entradas')">Registrar Entrada</a></li>
+        <li><a href="#" onclick="showPage('saidas')">Registrar Saída</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main>
+
+    <!-- Página Inicial -->
+    <section id="home" class="page">
+      <h1>Bem-vindo ao Sistema de Logística</h1>
+      <div class="dashboard">
+        <div class="card" onclick="showPage('rastreamento')">🧰 Rastrear Pedido</div>
+        <div class="card" onclick="showPage('estoque')">🧮 Contar Estoque</div>
+        <div class="card" onclick="showPage('identificacao')">🔍 Identificar Produto</div>
+        <div class="card" onclick="showPage('entradas')">📓 Registrar Entrada</div>
+        <div class="card" onclick="showPage('saidas')">📤 Registrar Saída</div>
+      </div>
+    </section>
+
+    <!-- Rastrear Pedido -->
+    <section id="rastreamento" class="page hidden">
+      <h2>🔍 Rastrear Pedido</h2>
+      <input type="text" id="codigoPedido" placeholder="Digite o código do pedido"/>
+      <button onclick="rastrearPedido()">Rastrear</button>
+      <div id="resultadoRastreamento"></div>
+    </section>
+
+    <!-- Contagem de Estoque -->
+    <section id="estoque" class="page hidden">
+      <h2>Contagem de Estoque</h2>
+      <button onclick="mostrarEstoque()">Mostrar Estoque</button>
+      <ul id="listaEstoque"></ul>
+    </section>
+
+    <!-- Identificação de Produto -->
+    <section id="identificacao" class="page hidden">
+      <h2>Identificar Produto</h2>
+      <input type="text" id="codigoProduto" placeholder="Digite o código do produto"/>
+      <button onclick="identificarProduto()">Buscar</button>
+      <div id="infoProduto"></div>
+    </section>
+
+    <!-- Registrar Entrada -->
+    <section id="entradas" class="page hidden">
+      <h2>Registrar Entrada de Produto</h2>
+      <input type="text" id="produtoEntrada" placeholder="Produto"/>
+      <input type="number" id="quantidadeEntrada" placeholder="Quantidade"/>
+      <button onclick="registrarEntrada()">Registrar</button>
+    </section>
+
+    <!-- Registrar Saída -->
+    <section id="saidas" class="page hidden">
+      <h2>Registrar Saída de Produto</h2>
+      <input type="text" id="produtoSaida" placeholder="Produto"/>
+      <input type="number" id="quantidadeSaida" placeholder="Quantidade"/>
+      <button onclick="registrarSaida()">Registrar</button>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 NPC consultoria. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    const estoque = {
+      'PROD001': { nome: 'sorvete de chocolate', quantidade: 50 },
+      'PROD002': { nome: 'sorvete de morango', quantidade: 20 },
+      'PROD003': { nome: 'sorvete de baunilha', quantidade: 75 }
+    };
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function rastrearPedido() {
+      const codigo = document.getElementById('codigoPedido').value.trim();
+      const result = document.getElementById('resultadoRastreamento');
+      if (codigo === '') {
+        result.textContent = "Por favor, digite um código de pedido.";
+        return;
+      }
+
+      result.innerHTML = `
+        <p><strong>Status:</strong> Em transporte</p>
+        <p><strong>Última atualização:</strong> 17/07/2025 às 10:32</p>
+      `;
+    }
+
+    function mostrarEstoque(){
+      const lista = document.getElementById('listaEstoque');
+      lista.innerHTML = '';
+      for (const cod in estoque) {
+        const item = estoque[cod];
+        const li = document.createElement('li');
+        li.textContent = `${item.nome} (${cod}): ${item.quantidade} unidades`;
+        lista.appendChild(li);
+      }
+    }
+
+    function identificarProduto() {
+      const codigo = document.getElementById('codigoProduto').value.trim();
+      const info = document.getElementById('infoProduto');
+      if (estoque[codigo]) {
+        info.innerHTML = `
+          <p><strong>Produto:</strong> ${estoque[codigo].nome}</p>
+          <p><strong>Quantidade:</strong> ${estoque[codigo].quantidade}</p>
+        `;
+      } else {
+        info.textContent = 'Produto não encontrado.';
+      }
+    }
+
+    function registrarEntrada() {
+      const produto = document.getElementById('produtoEntrada').value.trim();
+      const qtd = parseInt(document.getElementById('quantidadeEntrada').value);
+      if (estoque[produto]) {
+        estoque[produto].quantidade += qtd;
+        alert('Entrada registrada com sucesso!');
+        mostrarEstoque();  // Atualiza a visualização do estoque
+      } else {
+        alert('Produto não encontrado.');
+      }
+    }
+
+    function registrarSaida() {
+      const produto = document.getElementById('produtoSaida').value.trim();
+      const qtd = parseInt(document.getElementById('quantidadeSaida').value);
+      if (estoque[produto]) {
+        if (estoque[produto].quantidade >= qtd) {
+          estoque[produto].quantidade -= qtd;
+          alert('Saída registrada com sucesso!');
+          mostrarEstoque();  // Atualiza a visualização do estoque
+        } else {
+          alert('Quantidade insuficiente em estoque.');
+        }
+      } else {
+        alert('Produto não encontrado.');
+      }
+    }
+
+    // Mostrar a página inicial ao carregar
+    document.addEventListener('DOMContentLoaded', () => {
+      showPage('home');
+    });
+  </script>
+</body>
+</html>
